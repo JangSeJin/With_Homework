@@ -1,4 +1,4 @@
-package com.hour24.with_homework
+package com.hour24.with
 
 import org.junit.Test
 

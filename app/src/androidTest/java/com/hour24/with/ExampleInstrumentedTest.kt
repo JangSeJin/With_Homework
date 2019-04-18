@@ -1,4 +1,4 @@
-package com.hour24.with_homework
+package com.hour24.with
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
