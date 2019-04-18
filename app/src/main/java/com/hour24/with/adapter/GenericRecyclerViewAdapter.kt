@@ -59,13 +59,7 @@ abstract class GenericRecyclerViewAdapter<T : Any, in D : ViewDataBinding>(
 
     override fun getItemId(position: Int): Long {
         return try {
-
-            if (mList!![position] != null) {
-                mList!![position].hashCode().toLong()
-            } else {
-                mRandom.nextInt().toLong()
-            }
-
+            mList!![position].hashCode().toLong()
         } catch (e: Exception) {
             e.printStackTrace()
             0
