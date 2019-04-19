@@ -52,7 +52,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def appName = 'tb'
+            def appName = 'With_Innovation'
             def buildType = buildType.name // debug, release
             def date = new Date().format('yyMMddHHmm')
             def apkName = appName + '_' + buildType + '_' + date + '.apk'
