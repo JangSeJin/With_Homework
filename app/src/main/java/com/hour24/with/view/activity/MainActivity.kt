@@ -1,11 +1,14 @@
 package com.hour24.with.view.activity
 
+import android.databinding.DataBindingUtil
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.hour24.tb.adapter.GenericRecyclerViewAdapter
 import com.hour24.with.R
+import com.hour24.with.databinding.MainActivityBinding
+import com.hour24.with.databinding.MainItemBinding
 import com.hour24.with.model.MarvelModel
-import com.hour24.with.utils.Logger
 import com.hour24.with.utils.ObjectUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -15,22 +18,87 @@ import org.jsoup.select.Elements
 class MainActivity : AppCompatActivity() {
 
     private val TAG: String = MainActivity::class.java.name
-    private var mMarvelList: List<Element> = ArrayList<Element>()
+
+    // DataBinding
+    private lateinit var mBinding: MainActivityBinding
+    private val mViewModel = ViewModel()
+
+    // List
+    private lateinit var mAdapter: GenericRecyclerViewAdapter<MarvelModel, MainItemBinding>
+    private val mList = ArrayList<MarvelModel>()
+
+    private var mElementList: List<Element> = ArrayList<Element>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.main_activity)
 
-        Description().execute()
+        initDataBinding()
+        initLayout()
+        getData()
 
     }
+
+    /**
+     * Init DataBinding
+     */
+    private fun initDataBinding() {
+
+        mBinding.viewModel = mViewModel
+
+    }
+
+    /**
+     * Init Layout
+     */
+    private fun initLayout() {
+
+        // Adapter
+        mAdapter = object : GenericRecyclerViewAdapter<MarvelModel, MainItemBinding>(this@MainActivity, R.layout.main_item, mList) {
+
+            override fun onBindData(position: Int, model: MarvelModel, dataBinding: MainItemBinding) {
+
+                try {
+
+                    val viewModel = ViewModel()
+                    viewModel.mModel = model
+
+                    dataBinding.viewModel = viewModel
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+            }
+        }
+        mBinding.rvMain.adapter = mAdapter
+
+    }
+
+    private fun getData() {
+
+        mViewModel.getData()
+
+    }
+
 
     inner class ViewModel {
 
+        var mModel: MarvelModel? = null
+
+        /**
+         * 마블 데이터 가져옴
+         */
+        fun getData() {
+            MarvelCrawling().execute()
+        }
 
     }
 
-    inner class Description : AsyncTask<Void, Void, ArrayList<MarvelModel>>() {
+    /**
+     * 웹사이트 크롤링
+     */
+    inner class MarvelCrawling : AsyncTask<Void, Void, ArrayList<MarvelModel>>() {
 
 
         override fun onPreExecute() {
@@ -45,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             try {
 
                 // 한번 불러온 데이터는 다시 불러오지 않는다.
-                if (ObjectUtils.isEmpty(mMarvelList)) {
+                if (ObjectUtils.isEmpty(mElementList)) {
 
                     val doc = Jsoup.connect("https://www.thewrap.com/marvel-movies-ranked-worst-best-avengers-infinity-war-ant-man-venom-stan-lee-spider-man-into-the-spider-verse/").get()
 
@@ -55,39 +123,35 @@ class MainActivity : AppCompatActivity() {
                             .select("div[class=item-wrap]")
 
                     // 역순으로 변환
-                    mMarvelList = articleContents.reversed()
+                    mElementList = articleContents.reversed()
 
                 }
 
-                for (element in mMarvelList) {
+                for (element in mElementList) {
 
                     // 이미지 영역
                     val imageElement = element.select("div[class=image-wrap]")
+                    val imageUrl = imageElement.select("a img").attr("data-src")
 
                     // 캡션 영역
                     val cationElement = element.select("div[class=caption]")
-//                    Logger.e(TAG, cationElement.text())
-                    Logger.e(TAG, cationElement.select("strong").text())
 
+                    // 제목 처리
+                    val cation = cationElement.text()
+                    var title = cationElement.select("strong").text()
+
+                    // 디스크립션 추출
+                    val description = cation.replace(title, "").trim()
+
+                    val index = title.indexOf(".")
+                    if (index != -1) {
+                        val rank = title.substring(0, index).toInt()
+                        title = title.substring(index + 1, title.length).trim()
+
+                        list.add(MarvelModel(rank, title, description, imageUrl))
+                    }
                 }
-//
-//                for (elem in mElementDataSize) { //이렇게 요긴한 기능이
-//                    //영화목록 <li> 에서 다시 원하는 데이터를 추출해 낸다.
-//                    val my_title = elem.select("li dt[class=tit] a").text()
-//                    val my_link = elem.select("li div[class=thumb] a").attr("href")
-//                    val my_imgUrl = elem.select("li div[class=thumb] a img").attr("src")
-//                    //특정하기 힘들다... 저 앞에 있는집의 오른쪽으로 두번째집의 건너집이 바로 우리집이야 하는 식이다.
-//                    val rElem = elem.select("dl[class=info_txt1] dt").next().first()
-//                    val my_release = rElem.select("dd").text()
-//                    val dElem = elem.select("dt[class=tit_t2]").next().first()
-//                    val my_director = "감독: " + dElem.select("a").text()
-//                    //Log.d("test", "test" + mTitle);
-//                    //ArrayList에 계속 추가한다.
-//                    list.add(ItemObject(my_title, my_imgUrl, my_link, my_release, my_director))
-//                }
 
-//                //추출한 전체 <li> 출력해 보자.
-//                Logger.d("debug :", "List $mElementDataSize")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -96,8 +160,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onPostExecute(result: ArrayList<MarvelModel>) {
-
-
+            super.onPostExecute(result)
+            mList.addAll(result)
+            mAdapter.notifyDataSetChanged()
         }
     }
 }

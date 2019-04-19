@@ -22,7 +22,7 @@ abstract class GenericRecyclerViewAdapter<T : Any, in D : ViewDataBinding>(
     private val mRandom = Random()
 
 
-    abstract fun onBindData(position: Int, model: T?, dataBinding: D?)
+    abstract fun onBindData(position: Int, model: T, dataBinding: D)
 
     init {
 
