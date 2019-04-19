@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.github.chrisbanes.photoview.PhotoView
 
 
 /**
@@ -58,44 +59,5 @@ object ImageLoadUtils {
             e.printStackTrace()
         }
 
-    }
-
-    /**
-     * @param view
-     * @param url
-     * @param width
-     * @param height
-     */
-    @JvmStatic
-    @BindingAdapter("loadImage", "width", "height")
-    fun loadImage(view: ImageView, url: String?, width: Float, height: Float) {
-
-        try {
-
-            if (ObjectUtils.isEmpty(url)) {
-                return
-            }
-
-            Glide.with(view)
-                    .load(url)
-                    .apply(RequestOptions()
-                            .override(width.toInt(), height.toInt())
-                            .centerCrop())
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
-                            Logger.e(TAG, e!!.message + " / " + url)
-                            return false
-                        }
-
-                        override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                            return false
-                        }
-                    })
-                    .into(view)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 }

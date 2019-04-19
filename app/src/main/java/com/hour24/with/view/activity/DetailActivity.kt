@@ -2,6 +2,7 @@ package com.hour24.with.view.activity
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.hour24.with.R
@@ -23,9 +24,10 @@ class DetailActivity : AppCompatActivity() {
 
         initDataBinding()
         initLayout()
-        getData()
+        initIntent()
 
     }
+
 
     /**
      * Init DataBinding
@@ -43,33 +45,38 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun getData() {
+    /**
+     * Intent 데이터
+     */
+    private fun initIntent() {
 
-        mViewModel.getData()
+        try {
+
+            val intent = intent
+            val model: MarvelModel = intent.getSerializableExtra(MarvelModel::class.java.name) as MarvelModel
+            mViewModel.mModel = model
+            mViewModel.setScale()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
     }
-
 
     inner class ViewModel {
 
         var mModel: MarvelModel? = null
 
-        /**
-         * onClick
-         */
-        fun onClick(v: View) {
-            when (v.id) {
-//                R.id.ll_content -> {
-//
-//                }
-            }
+        // 이미지 확대
+        fun setScale() {
+            Handler().postDelayed({
+                try {
+                    mBinding.pvDetail.setScale(mBinding.pvDetail.maximumScale, true)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }, 1000)
         }
 
-        /**
-         * 마블 데이터 가져옴
-         */
-        fun getData() {
-
-        }
     }
 }

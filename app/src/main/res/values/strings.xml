@@ -1,6 +1,7 @@
 <resources>
 
-    <string name="app_name">Marvel Movies Ranked</string>
-    <string name="main_title_rank">%d. </string>
+    <string name="app_name">WITH Innovation</string>
+    <string name="main_title">Marvel Movies Ranked</string>
+    <string name="main_item_rank">%d.</string>
 
 </resources>

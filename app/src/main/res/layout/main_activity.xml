@@ -28,7 +28,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
-                bind:toolbarTitle="@{@string/app_name}" />
+                bind:toolbarTitle="@{@string/main_title}" />
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView

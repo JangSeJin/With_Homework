@@ -14,12 +14,65 @@
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlack"
         android:orientation="vertical">
 
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/pv_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:loadImage="@{viewModel.mModel.imageUrl}"
+            tools:src="@mipmap/ic_launcher" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#85000000"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- 랭크 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/main_item_rank(viewModel.mModel.rank)}"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="@{viewModel.mModel.rank == 0 ? View.GONE : View.VISIBLE}"
+                    tools:text="1." />
+
+                <!-- 제목 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text='@{viewModel.mModel.title ?? ""}'
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Logan" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text='@{viewModel.mModel.description ?? ""}'
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                tools:text="James Mangold's small-scale western is a game changer for the entire superhero genre, daring to defy pretty much standard by which you expect these movies to operate. It's just a great movie by any normal standard. Where elevated the genre" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </layout>
