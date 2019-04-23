@@ -48,9 +48,12 @@ abstract class GenericRecyclerViewAdapter<T : Any, in D : ViewDataBinding>(
         return if (!ObjectUtils.isEmpty(mList)) mList!!.size else 0
     }
 
-    fun addItems(arrayList: ArrayList<T>) {
-        mList = arrayList
-        this.notifyDataSetChanged()
+    /**
+     * addAll List
+     */
+    fun addAll(list: ArrayList<T>) {
+        mList!!.addAll(list)
+        notifyDataSetChanged()
     }
 
     fun getItem(position: Int): T {

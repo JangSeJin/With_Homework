@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.hour24.with.view.activity.DetailActivity.ViewModel" />
+            type="com.hour24.with.view.viewmodel.DetailViewModel" />
 
     </data>
 

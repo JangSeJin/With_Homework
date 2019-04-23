@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.hour24.with.view.activity.MainActivity.ViewModel" />
+            type="com.hour24.with.view.viewmodel.MainViewModel" />
 
     </data>
 

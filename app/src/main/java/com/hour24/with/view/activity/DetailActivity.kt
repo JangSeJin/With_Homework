@@ -8,6 +8,7 @@ import android.view.View
 import com.hour24.with.R
 import com.hour24.with.databinding.DetailActivityBinding
 import com.hour24.with.model.MarvelModel
+import com.hour24.with.view.viewmodel.DetailViewModel
 
 
 class DetailActivity : AppCompatActivity() {
@@ -16,18 +17,16 @@ class DetailActivity : AppCompatActivity() {
 
     // DataBinding
     private lateinit var mBinding: DetailActivityBinding
-    private val mViewModel = ViewModel()
+    private val mViewModel = DetailViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.detail_activity)
 
         initDataBinding()
-        initLayout()
         initIntent()
 
     }
-
 
     /**
      * Init DataBinding
@@ -35,13 +34,6 @@ class DetailActivity : AppCompatActivity() {
     private fun initDataBinding() {
 
         mBinding.viewModel = mViewModel
-
-    }
-
-    /**
-     * Init Layout
-     */
-    private fun initLayout() {
 
     }
 
@@ -55,7 +47,8 @@ class DetailActivity : AppCompatActivity() {
             val intent = intent
             val model: MarvelModel = intent.getSerializableExtra(MarvelModel::class.java.name) as MarvelModel
             mViewModel.mModel = model
-            mViewModel.setScale()
+
+            setScale()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -63,20 +56,17 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    inner class ViewModel {
-
-        var mModel: MarvelModel? = null
-
-        // 이미지 확대
-        fun setScale() {
-            Handler().postDelayed({
-                try {
-                    mBinding.pvDetail.setScale(mBinding.pvDetail.maximumScale, true)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }, 1000)
-        }
-
+    /**
+     *이미지 확대
+     */
+    private fun setScale() {
+        Handler().postDelayed({
+            try {
+                mBinding.pvDetail.setScale(mBinding.pvDetail.maximumScale, true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }, 1000)
     }
+
 }
