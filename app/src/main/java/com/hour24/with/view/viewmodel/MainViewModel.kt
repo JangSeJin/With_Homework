@@ -10,13 +10,16 @@ import com.hour24.tb.adapter.GenericRecyclerViewAdapter
 import com.hour24.with.R
 import com.hour24.with.databinding.MainItemBinding
 import com.hour24.with.model.MarvelModel
-import com.hour24.with.utils.Logger
 import com.hour24.with.utils.ObjectUtils
 import com.hour24.with.view.activity.DetailActivity
 import com.hour24.with.view.custom.ProgressDialog
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class MainViewModel constructor(private val mContext: Context) {
 
@@ -57,8 +60,65 @@ class MainViewModel constructor(private val mContext: Context) {
             return
         }
 
-        MarvelCrawling().execute()
+//        MarvelCrawling().execute()
+
+        if (ObjectUtils.isEmpty(mElementList)) {
+
+            getJsoupDocument()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map {
+                        it.select("div[class=gallery-wrap photos]")
+                                .select("div[class=item-wrap]")
+                                .reversed()
+                    }
+                    .subscribe({ it ->
+                        mElementList = it as ArrayList<Element>
+                    })
+
+        } else {
+
+        }
     }
+
+    private fun setData() {
+
+        // 페이지 계산
+        val start = (mPageNo * mPageSize) - mPageSize // Start Index
+        var end = (mPageNo * mPageSize) - 1 // End Index
+
+        // 마지막 인덱스 처리
+        val size = mElementList.size
+        if (end > size) {
+            end = (size - 1)
+            mIsLast = true
+        }
+
+        Observable
+                .range(start, end)
+                .
+
+    }
+
+    private fun getJsoupDocument(): Observable<Document> {
+        return Observable.fromCallable({
+            Jsoup.connect("https://www.thewrap.com/marvel-movies-ranked-worst-best-avengers-infinity-war-ant-man-venom-stan-lee-spider-man-into-the-spider-verse/").get()
+        })
+    }
+
+
+//    private fun getElementList(): List<Element> {
+//        return if (!ObjectUtils.isEmpty(mElementList)) {
+//            mElementList
+//        } else {
+//            getJsoupDocument()
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe({
+//                        return mElementList
+//                    })
+//        }
+//    }
 
     /**
      * 웹사이트 크롤링
@@ -90,8 +150,7 @@ class MainViewModel constructor(private val mContext: Context) {
                             .select("div[class=item-wrap]")
 
                     // 역순으로 변환
-                    mElementList = articleContents.reversed()
-
+//                    mElementList = articleContents.reverse()
                 }
 
                 // 페이지 계산
