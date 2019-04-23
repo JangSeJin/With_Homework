@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.hour24.with.view.viewmodel.MainViewModel" />
@@ -31,12 +33,29 @@
                 bind:toolbarTitle="@{@string/main_title}" />
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_main"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:addOnScrollListener="@{viewModel.mOnScrollListener}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/main_item" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ImageView
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_marvel" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:addOnScrollListener="@{viewModel.mOnScrollListener}"
+                tools:listitem="@layout/main_item" />
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="@{viewModel.mIsProgress ? View.VISIBLE : View.GONE}" />
+        </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

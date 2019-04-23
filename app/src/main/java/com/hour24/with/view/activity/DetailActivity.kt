@@ -68,7 +68,7 @@ class DetailActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }, 1000)
+        }, 500)
     }
 
 }

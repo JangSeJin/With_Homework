@@ -16,7 +16,7 @@ import java.util.Random
 abstract class GenericRecyclerViewAdapter<T : Any, in D : ViewDataBinding>(
         private val mContext: Context,
         private val mLayoutId: Int,
-        private var mList: ArrayList<T>?)
+        private var mList: ArrayList<T>)
     : RecyclerView.Adapter<GenericRecyclerViewAdapter.ViewHolder>() {
 
     private val mRandom = Random()
@@ -37,7 +37,7 @@ abstract class GenericRecyclerViewAdapter<T : Any, in D : ViewDataBinding>(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         try {
-            onBindData(position, mList!![position], holder.mDataBinding as D)
+            onBindData(position, mList[position], holder.mDataBinding as D)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -45,24 +45,29 @@ abstract class GenericRecyclerViewAdapter<T : Any, in D : ViewDataBinding>(
     }
 
     override fun getItemCount(): Int {
-        return if (!ObjectUtils.isEmpty(mList)) mList!!.size else 0
+        return if (!ObjectUtils.isEmpty(mList)) mList.size else 0
     }
 
     /**
      * addAll List
      */
     fun addAll(list: ArrayList<T>) {
-        mList!!.addAll(list)
+        mList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    fun addItem(item: T) {
+        mList.add(item)
         notifyDataSetChanged()
     }
 
     fun getItem(position: Int): T {
-        return mList!![position]
+        return mList[position]
     }
 
     override fun getItemId(position: Int): Long {
         return try {
-            mList!![position].hashCode().toLong()
+            mList[position].hashCode().toLong()
         } catch (e: Exception) {
             e.printStackTrace()
             0
