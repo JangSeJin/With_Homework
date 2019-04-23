@@ -8,6 +8,7 @@ import android.view.View
 import com.hour24.with.R
 import com.hour24.with.databinding.DetailActivityBinding
 import com.hour24.with.model.MarvelModel
+import com.hour24.with.utils.Logger
 import com.hour24.with.view.viewmodel.DetailViewModel
 
 
@@ -47,6 +48,7 @@ class DetailActivity : AppCompatActivity() {
             val intent = intent
             val model: MarvelModel = intent.getSerializableExtra(MarvelModel::class.java.name) as MarvelModel
             mViewModel.mModel = model
+            Logger.e(TAG, "${model.rank} / ${model.imageUrl}")
 
             setScale()
 

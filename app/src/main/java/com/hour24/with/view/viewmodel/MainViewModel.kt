@@ -10,6 +10,7 @@ import com.hour24.tb.adapter.GenericRecyclerViewAdapter
 import com.hour24.with.R
 import com.hour24.with.databinding.MainItemBinding
 import com.hour24.with.model.MarvelModel
+import com.hour24.with.utils.Logger
 import com.hour24.with.utils.ObjectUtils
 import com.hour24.with.view.activity.DetailActivity
 import com.hour24.with.view.custom.ProgressDialog
@@ -109,8 +110,13 @@ class MainViewModel constructor(private val mContext: Context) {
                     val element = mElementList[i]
 
                     // 이미지 영역
-                    val imageElement = element.select("div[class=image-wrap]")
-                    val imageUrl = imageElement.select("a img").attr("data-src")
+                    val imageElement = element.select("div[class=image-wrap] a img")
+                    val isImageUrl = imageElement.attr("data-src").isBlank()
+                    val imageUrl = if (isImageUrl) {
+                        imageElement.attr("src")
+                    } else {
+                        imageElement.attr("data-src")
+                    }
 
                     // 캡션 영역
                     val cationElement = element.select("div[class=caption]")

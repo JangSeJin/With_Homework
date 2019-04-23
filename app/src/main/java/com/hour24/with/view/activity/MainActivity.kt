@@ -9,6 +9,7 @@ import com.hour24.with.R
 import com.hour24.with.databinding.MainActivityBinding
 import com.hour24.with.databinding.MainItemBinding
 import com.hour24.with.model.MarvelModel
+import com.hour24.with.utils.Logger
 import com.hour24.with.view.viewmodel.MainViewModel
 
 
@@ -63,6 +64,8 @@ class MainActivity : AppCompatActivity() {
                     viewModel.mModel = model
 
                     dataBinding.viewModel = viewModel
+
+                    Logger.e(TAG, "${model.rank} / ${model.imageUrl}")
 
                 } catch (e: Exception) {
                     e.printStackTrace()
