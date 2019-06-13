@@ -46,24 +46,24 @@
                 android:fitsSystemWindows="true"
                 android:orientation="vertical">
 
+                <!-- exitUntilCollapsed : 해당뷰에 minHeight를 정의하고 있으면, Toolbar가 해당 크기 까지만 축소가 됩니다.-->
+                <!-- snap : AppbarLayout size 의 절반 크기를 기준으로 아래 위로 달라 붙는 flag 입니다. -->
                 <android.support.design.widget.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
-                    app:expandedTitleMarginEnd="56dp"
-                    app:expandedTitleMarginStart="40dp"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="56dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="56dp">
 
                         <TextView
                             android:id="@+id/parallax_title"
                             android:layout_width="match_parent"
-                            android:layout_height="54dp"
+                            android:layout_height="300dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="24dp"
                             android:text="페이지타이틀"
@@ -72,11 +72,7 @@
                         <FrameLayout
                             android:id="@+id/tabs_layout_"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginBottom="8dp">
+                            android:layout_height="54dp">
 
                             <View
                                 android:layout_width="match_parent"
@@ -89,7 +85,7 @@
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="107dp"
+                        android:layout_height="110dp"
                         android:gravity="top|left"
                         android:paddingLeft="0dp"
                         android:paddingRight="0dp"
