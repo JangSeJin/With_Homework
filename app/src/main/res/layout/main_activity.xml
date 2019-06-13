@@ -14,48 +14,102 @@
 
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/cl_main"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:background="#ffffff"
+        android:orientation="vertical">
 
-        <android.support.design.widget.AppBarLayout
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout_"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                bind:toolbarTitle="@{@string/main_title}" />
-        </android.support.design.widget.AppBarLayout>
+                android:layout_height="match_parent"
+                android:clickable="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:addOnScrollListener="@{viewModel.mOnScrollListener}" />
+            </FrameLayout>
 
-            <ImageView
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_marvel" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_main"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar_"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:addOnScrollListener="@{viewModel.mOnScrollListener}"
-                tools:listitem="@layout/main_item" />
+                android:background="#ffffff"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="@{viewModel.mIsProgress ? View.VISIBLE : View.GONE}" />
-        </RelativeLayout>
-    </android.support.design.widget.CoordinatorLayout>
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    app:expandedTitleMarginEnd="56dp"
+                    app:expandedTitleMarginStart="40dp"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="56dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/parallax_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="24dp"
+                            android:text="페이지타이틀"
+                            app:layout_scrollFlags="scroll" />
+
+                        <FrameLayout
+                            android:id="@+id/tabs_layout_"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="8dp">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="#993838" />
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="107dp"
+                        android:gravity="top|left"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="0dp"
+                        app:contentInsetEnd="0dp"
+                        app:contentInsetLeft="0dp"
+                        app:contentInsetRight="0dp"
+                        app:contentInsetStart="0dp"
+                        app:layout_collapseMode="pin"
+                        app:theme="@null"
+                        app:title="">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:background="#ff1020" />
+                    </android.support.v7.widget.Toolbar>
+                </android.support.design.widget.CollapsingToolbarLayout>
+            </android.support.design.widget.AppBarLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </FrameLayout>
 </layout>

@@ -1,7 +1,10 @@
 package com.hour24.with.view.activity
 
 import android.databinding.DataBindingUtil
+import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
+import android.support.design.widget.CoordinatorLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.hour24.tb.adapter.GenericRecyclerViewAdapter
@@ -78,6 +81,13 @@ class MainActivity : AppCompatActivity() {
 
         // Adapter 주입
         mViewModel.mAdapter = mAdapter
+//
+//        val params: CoordinatorLayout.LayoutParams = mBinding.appBar.layoutParams as CoordinatorLayout.LayoutParams
+//        val behavior = params.behavior as AppBarLayout.Behavior?
+//        if (behavior != null) {
+//            mBinding.appBar.setExpanded(true, true)
+//            behavior.onNestedFling(mBinding.clMain, mBinding.appBar, null!!, 0f, (-mBinding.appBar.height).toFloat(), true)
+//        }
 
     }
 
